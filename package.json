@@ -1,6 +1,6 @@
 {
   "name": "sequelize-ts-decorator",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Sequelize work with decorator",
   "main": "build/index.js",
   "author": "JefferyLiang",
