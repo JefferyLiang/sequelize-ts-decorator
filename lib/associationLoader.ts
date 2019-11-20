@@ -51,7 +51,7 @@ export function AssociationLoader(option: SequelizeEntityLoaderOption) {
 class AssociationLoaderService {
   private static SEQUELIZE = Symbol("Seqeulize");
   // 允许注入关系类型
-  private static ASSOCIATION_INJECT_LIST: Symbol[] = Object.values(
+  private static ASSOCIATION_INJECT_LIST: string[] = Object.values(
     Association.associations
   );
 
@@ -82,7 +82,7 @@ class AssociationLoaderService {
     for (let filePath of filePaths) {
       let entity = this.getSequelizeEntity(filePath);
       if (entity) {
-        let option: InitOption = Reflect.getMetadata(MODEL_OPTION, entity);
+        let option: any = Reflect.getMetadata(MODEL_OPTION, entity);
         option.sequelize = sequelize;
         entity.init(option.fields, option);
         // 挂载sequelize在类中
@@ -104,7 +104,6 @@ class AssociationLoaderService {
         if (associations && associations.length > 0) {
           for (let association of associations) {
             let { from, to, option } = association;
-            console.log(type, type.toString());
             from[type.toString()](entityMap.get(to), option);
           }
         }

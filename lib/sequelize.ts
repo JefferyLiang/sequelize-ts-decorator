@@ -7,7 +7,7 @@ import {
   ModelOptions,
   Sequelize,
   ModelAttributes
-} from "sequelize";
+} from "sequelize/types";
 
 export const ENTITY_NAME = Symbol("entity");
 export const MODEL_OPTION = Symbol("modelOption");

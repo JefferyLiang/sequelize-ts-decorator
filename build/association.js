@@ -16,8 +16,8 @@ class Association {
 }
 exports.Association = Association;
 Association.associations = {
-    BELONGS_TO: Symbol("belongsTo"),
-    HAS_MANY: Symbol("hasMany"),
-    BELONGS_TO_MANY: Symbol("belongsToMany")
+    BELONGS_TO: "belongsTo",
+    HAS_MANY: "hasMany",
+    BELONGS_TO_MANY: "belongsToMany"
 };
 //# sourceMappingURL=association.js.map

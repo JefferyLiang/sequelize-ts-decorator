@@ -6,12 +6,12 @@ export type AssociationOption<T> = {
 
 export class Association {
   public static associations = {
-    BELONGS_TO: Symbol("belongsTo"),
-    HAS_MANY: Symbol("hasMany"),
-    BELONGS_TO_MANY: Symbol("belongsToMany")
+    BELONGS_TO: "belongsTo",
+    HAS_MANY: "hasMany",
+    BELONGS_TO_MANY: "belongsToMany"
   };
 
-  public static associationDecoratorBuilder<T>(association: Symbol) {
+  public static associationDecoratorBuilder<T>(association: string) {
     return (options: Array<AssociationOption<T>>): ClassDecorator => {
       return target => {
         if (options.length > 0) {

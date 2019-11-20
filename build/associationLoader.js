@@ -70,7 +70,6 @@ class AssociationLoaderService {
                 if (associations && associations.length > 0) {
                     for (let association of associations) {
                         let { from, to, option } = association;
-                        console.log(type, type.toString());
                         from[type.toString()](entityMap.get(to), option);
                     }
                 }
