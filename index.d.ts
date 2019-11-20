@@ -7,7 +7,7 @@ import {
   BelongsToManyOptions,
   ConnectionOptions,
   Options
-} from "sequelize";
+} from "sequelize/types";
 
 interface InitOption extends ModelOptions {
   fields: ModelAttributes;
