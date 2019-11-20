@@ -4,6 +4,7 @@ import { AssociationLoader } from "../lib/associationLoader";
 import { ControllerLoader } from "express-ts-decorator";
 
 @AssociationLoader({
+  debug: true,
   filePath: Path.join(__dirname, "./entity"),
   dbConfig: {
     host: "localhost",

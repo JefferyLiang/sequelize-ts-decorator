@@ -6,7 +6,6 @@ import { Account } from "../entity/Account";
 export class AccountCtrl {
   @Get("")
   public async list(req: Request) {
-    console.log(req);
     return await Account.findAndCountAll();
   }
 }

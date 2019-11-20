@@ -19,6 +19,7 @@ interface dbConfigOption extends ConnectionOptions {
 }
 
 interface SequelizeEntityLoaderOption {
+  debug?: boolean;
   filePath: string;
   dbConfigFile?: string;
   dbConfig?: dbConfigOption;
@@ -42,6 +43,7 @@ declare namespace sequelizeTsDecorator {
   export function AssociationLoader(
     option: SequelizeEntityLoaderOption
   ): ClassDecorator;
+  export function AfterFind(): MethodDecorator;
 }
 
 export = sequelizeTsDecorator;

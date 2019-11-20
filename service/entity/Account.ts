@@ -1,5 +1,7 @@
-import { Model, DataTypes } from "sequelize";
+import { Model, DataTypes, FindOptions } from "sequelize";
 import { Entity } from "../../lib/sequelize";
+import { AfterFindHook } from "../../lib/hook";
+import * as _ from "lodash";
 
 @Entity("account", {
   fields: {
@@ -40,4 +42,14 @@ export class Account extends Model {
   public password!: string;
   public createdAt!: Date;
   public updatedAt!: Date;
+
+  public count!: number;
+
+  @AfterFindHook()
+  public static setCount(accounts: Account | Account[], option: FindOptions) {
+    let datas = Array.isArray(accounts) ? accounts : [accounts];
+    for (let data of datas) {
+      data.setDataValue("count", 1);
+    }
+  }
 }

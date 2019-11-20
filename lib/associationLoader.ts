@@ -1,15 +1,17 @@
 import "reflect-metadata";
 import { Model, Options, ConnectionOptions, Sequelize } from "sequelize";
 import { Association } from "./association";
-import { ENTITY_NAME, MODEL_OPTION, InitOption } from "./sequelize";
+import { ENTITY_NAME, MODEL_OPTION } from "./sequelize";
 import { Connection } from "./connection";
 import * as fs from "fs";
+import { HookService } from "./hook";
 
 export interface dbConfigOption extends ConnectionOptions {
   option: Options;
 }
 
 type SequelizeEntityLoaderOption = {
+  debug?: boolean;
   filePath: string;
   dbConfigFile?: string;
   dbConfig?: dbConfigOption;
@@ -33,6 +35,7 @@ export function AssociationLoader(option: SequelizeEntityLoaderOption) {
         this.connection = new Connection(
           option.dbConfig || require(option.dbConfigFile!)
         );
+        AssociationLoaderService.debug = option.debug || false;
         // 读取Sequelize模型
         if (option.filePath) {
           if (!fs.existsSync(option.filePath)) {
@@ -43,17 +46,29 @@ export function AssociationLoader(option: SequelizeEntityLoaderOption) {
             this.connection.sequelize
           );
         }
+        // 注入钩子
+        AssociationLoaderService.injectHook();
       }
     };
   };
 }
 
 class AssociationLoaderService {
-  private static SEQUELIZE = Symbol("Seqeulize");
+  public static debug: boolean = false;
+  private static entityMap: Map<string, Model> = new Map();
+
   // 允许注入关系类型
   private static ASSOCIATION_INJECT_LIST: string[] = Object.values(
     Association.associations
   );
+
+  public static log(message: string) {
+    if (this.debug) {
+      console.log(
+        `[Sequelize-ts-decorator] ${new Date().toLocaleString()} : ${message}...`
+      );
+    }
+  }
 
   public static getFileList(path: string): string[] {
     return fs
@@ -79,6 +94,7 @@ class AssociationLoaderService {
   public static injectAssociation(path: string, sequelize: Sequelize) {
     let filePaths = this.getFileList(path);
     let entitys: Model[] = [];
+    this.log("find entity now");
     for (let filePath of filePaths) {
       let entity = this.getSequelizeEntity(filePath);
       if (entity) {
@@ -87,26 +103,43 @@ class AssociationLoaderService {
         entity.init(option.fields, option);
         // 挂载sequelize在类中
         entity.seqeulize = sequelize;
-        // Reflect.defineMetadata(this.SEQUELIZE, sequelize, entity);
         entitys.push(entity);
       }
     }
+    this.log("mapping entity now");
     // set up the model entity map
-    let entityMap = new Map();
     entitys.forEach(model => {
       let entityName = Reflect.getMetadata(ENTITY_NAME, model);
-      entityMap.set(entityName, model);
+      this.entityMap.set(entityName, model);
     });
     // set up the association
+    this.log("set up associations now");
     for (let entity of entitys) {
       for (let type of this.ASSOCIATION_INJECT_LIST) {
         let associations = Reflect.getMetadata(type, entity);
         if (associations && associations.length > 0) {
           for (let association of associations) {
             let { from, to, option } = association;
-            from[type.toString()](entityMap.get(to), option);
+            from[type.toString()](this.entityMap.get(to), option);
           }
         }
+      }
+    }
+  }
+
+  public static injectHook() {
+    this.log("inject model hook");
+    let HookTypes: any[] = Object.values(HookService.hookTypes);
+    for (let entity of this.entityMap.values()) {
+      for (let hookType of HookTypes) {
+        let hooksMap: Map<any, Function> = Reflect.getMetadata(
+          hookType,
+          entity
+        );
+        if (!hooksMap || hooksMap.size === 0) continue;
+        hooksMap.forEach((val, key) => {
+          entity.addHook(hookType, key, val);
+        });
       }
     }
   }
