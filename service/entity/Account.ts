@@ -1,7 +1,7 @@
 import { Model, DataTypes, FindOptions } from "sequelize";
 import { Entity } from "../../lib/sequelize";
 import { AfterFindHook } from "../../lib/hook";
-import { Column, PrimaryKey } from "../../lib/column";
+import { Column, Id } from "../../lib/column";
 import * as _ from "lodash";
 
 @Entity("account", {
@@ -9,8 +9,7 @@ import * as _ from "lodash";
   timestamps: true
 })
 export class Account extends Model {
-  @Column({ type: DataTypes.INTEGER })
-  @PrimaryKey(true)
+  @Id()
   public readonly id!: number;
   @Column({ type: DataTypes.STRING(512) })
   public email!: string;

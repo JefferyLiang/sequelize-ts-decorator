@@ -68,7 +68,7 @@ declare namespace sequelizeTsDecorator {
     onDelete?: ReferencesOnTypes,
     onUpdate?: ReferencesOnTypes
   ): PropertyDecorator;
-  export const Id: PropertyDecorator;
+  export function Id(): PropertyDecorator;
 }
 
 export = sequelizeTsDecorator;
