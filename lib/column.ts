@@ -4,7 +4,8 @@ import {
   ModelAttributeColumnOptions,
   ModelAttributeColumnReferencesOptions,
   ModelValidateOptions,
-  ModelAttributes
+  ModelAttributes,
+  DataTypes
 } from "sequelize";
 
 export function Column(option: {
@@ -15,7 +16,7 @@ export function Column(option: {
 }): PropertyDecorator {
   return (target, key) => {
     let options: ModelAttributeColumnOptions = Reflect.getMetadata(
-      ColumnService.getTypeKey(key),
+      ColumnService.getColumnOptionKey(key),
       target.constructor
     );
     if (!options) {
@@ -26,7 +27,7 @@ export function Column(option: {
         validate: option.validate || undefined
       };
       Reflect.defineMetadata(
-        ColumnService.getTypeKey(key),
+        ColumnService.getColumnOptionKey(key),
         options,
         target.constructor
       );
@@ -41,13 +42,13 @@ export function Column(option: {
 export function PrimaryKey(atuoIncrement: boolean = false): PropertyDecorator {
   return (target, key) => {
     let option: any = Reflect.getMetadata(
-      ColumnService.getTypeKey(key),
+      ColumnService.getColumnOptionKey(key),
       target.constructor
     );
     if (!option) {
       option = {};
       Reflect.defineMetadata(
-        ColumnService.getTypeKey(key),
+        ColumnService.getColumnOptionKey(key),
         option,
         target.constructor
       );
@@ -56,6 +57,27 @@ export function PrimaryKey(atuoIncrement: boolean = false): PropertyDecorator {
     option.primaryKey = true;
   };
 }
+
+export const Id = (): PropertyDecorator => {
+  return (target, key) => {
+    let option: any = Reflect.getMetadata(
+      ColumnService.getColumnOptionKey(key),
+      target.constructor
+    );
+    if (!option) {
+      option = {};
+      Reflect.defineMetadata(
+        ColumnService.getColumnOptionKey(key),
+        option,
+        target.constructor
+      );
+    }
+    option.type = DataTypes.INTEGER;
+    option.allowNull = false;
+    option.autoIncrement = true;
+    option.primaryKey = true;
+  };
+};
 
 type ReferencesOnTypes =
   | "CASCADE"
@@ -71,13 +93,13 @@ export function References(
 ): PropertyDecorator {
   return (target, key) => {
     let option: any = Reflect.getMetadata(
-      ColumnService.getTypeKey(key),
+      ColumnService.getColumnOptionKey(key),
       target.constructor
     );
     if (!option) {
       option = {};
       Reflect.defineMetadata(
-        ColumnService.getTypeKey(key),
+        ColumnService.getColumnOptionKey(key),
         option,
         target.constructor
       );
@@ -92,7 +114,7 @@ export class ColumnService {
   public static COLUMN_KEY = Symbol("ATTRIBUTE");
   public static TYPES = Symbol("TYPE");
 
-  public static getTypeKey(key: string | Symbol): string {
+  public static getColumnOptionKey(key: string | Symbol): string {
     return `${this.COLUMN_KEY.toString()}_${key.toString()}`;
   }
 

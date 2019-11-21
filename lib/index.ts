@@ -12,3 +12,4 @@ export const AfterFind = hook.AfterFindHook;
 export const Column = Columns.Column;
 export const References = Columns.References;
 export const PrimaryKey = Columns.PrimaryKey;
+export const Id = Columns.Id;

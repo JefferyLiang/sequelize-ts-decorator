@@ -1,9 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 require("reflect-metadata");
+const sequelize_1 = require("sequelize");
 function Column(option) {
     return (target, key) => {
-        let options = Reflect.getMetadata(ColumnService.getTypeKey(key), target.constructor);
+        let options = Reflect.getMetadata(ColumnService.getColumnOptionKey(key), target.constructor);
         if (!options) {
             options = {
                 type: option.type,
@@ -11,7 +12,7 @@ function Column(option) {
                 unique: option.unique || false,
                 validate: option.validate || undefined
             };
-            Reflect.defineMetadata(ColumnService.getTypeKey(key), options, target.constructor);
+            Reflect.defineMetadata(ColumnService.getColumnOptionKey(key), options, target.constructor);
         }
         options.type = option.type;
         options.allowNull = option.nullable || false;
@@ -22,22 +23,35 @@ function Column(option) {
 exports.Column = Column;
 function PrimaryKey(atuoIncrement = false) {
     return (target, key) => {
-        let option = Reflect.getMetadata(ColumnService.getTypeKey(key), target.constructor);
+        let option = Reflect.getMetadata(ColumnService.getColumnOptionKey(key), target.constructor);
         if (!option) {
             option = {};
-            Reflect.defineMetadata(ColumnService.getTypeKey(key), option, target.constructor);
+            Reflect.defineMetadata(ColumnService.getColumnOptionKey(key), option, target.constructor);
         }
         option.autoIncrement = atuoIncrement;
         option.primaryKey = true;
     };
 }
 exports.PrimaryKey = PrimaryKey;
-function References(options, onDelete = "SET NULL", onUpdate = "NO ACTION") {
+exports.Id = () => {
     return (target, key) => {
-        let option = Reflect.getMetadata(ColumnService.getTypeKey(key), target.constructor);
+        let option = Reflect.getMetadata(ColumnService.getColumnOptionKey(key), target.constructor);
         if (!option) {
             option = {};
-            Reflect.defineMetadata(ColumnService.getTypeKey(key), option, target.constructor);
+            Reflect.defineMetadata(ColumnService.getColumnOptionKey(key), option, target.constructor);
+        }
+        option.type = sequelize_1.DataTypes.INTEGER;
+        option.allowNull = false;
+        option.autoIncrement = true;
+        option.primaryKey = true;
+    };
+};
+function References(options, onDelete = "SET NULL", onUpdate = "NO ACTION") {
+    return (target, key) => {
+        let option = Reflect.getMetadata(ColumnService.getColumnOptionKey(key), target.constructor);
+        if (!option) {
+            option = {};
+            Reflect.defineMetadata(ColumnService.getColumnOptionKey(key), option, target.constructor);
         }
         option.references = options;
         option.onDelete = onDelete;
@@ -46,7 +60,7 @@ function References(options, onDelete = "SET NULL", onUpdate = "NO ACTION") {
 }
 exports.References = References;
 class ColumnService {
-    static getTypeKey(key) {
+    static getColumnOptionKey(key) {
         return `${this.COLUMN_KEY.toString()}_${key.toString()}`;
     }
     static getColumnsFiledOption(target) {

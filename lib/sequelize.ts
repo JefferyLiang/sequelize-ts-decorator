@@ -5,15 +5,13 @@ import {
   BelongsToOptions,
   BelongsToManyOptions,
   ModelOptions,
-  Sequelize,
-  ModelAttributes
+  Sequelize
 } from "sequelize/types";
 
 export const ENTITY_NAME = Symbol("entity");
 export const MODEL_OPTION = Symbol("modelOption");
 
 export interface InitOption extends ModelOptions {
-  // fields: ModelAttributes;
   sequelize?: Sequelize;
 }
 

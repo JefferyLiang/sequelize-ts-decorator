@@ -97,12 +97,15 @@ class AssociationLoaderService {
     let entitys: Model[] = [];
     this.log("find entity now");
     for (let filePath of filePaths) {
+      // 读取模型
       let entity = this.getSequelizeEntity(filePath);
       if (entity) {
+        // 获取实例配置信息
         let option: any = Reflect.getMetadata(MODEL_OPTION, entity);
+        // 获取实例字段信息
         let fields = ColumnService.getColumnsFiledOption(entity);
-        // if (Object.keys(fields).length === 0) fields = option.fields;
         option.sequelize = sequelize;
+        // 初始化实例
         entity.init(fields, option);
         // 挂载sequelize在类中
         entity.seqeulize = sequelize;
@@ -111,6 +114,7 @@ class AssociationLoaderService {
     }
     this.log("mapping entity now");
     // set up the model entity map
+    // 实例化模型放入模型map中
     entitys.forEach(model => {
       let entityName = Reflect.getMetadata(ENTITY_NAME, model);
       this.entityMap.set(entityName, model);
@@ -118,11 +122,15 @@ class AssociationLoaderService {
     // set up the association
     this.log("set up associations now");
     for (let entity of entitys) {
+      // 遍历外键关系
       for (let type of this.ASSOCIATION_INJECT_LIST) {
+        // 获取外键关系配置
         let associations = Reflect.getMetadata(type, entity);
         if (associations && associations.length > 0) {
           for (let association of associations) {
+            // 读取单个配置信息
             let { from, to, option } = association;
+            // 配置关联
             from[type.toString()](this.entityMap.get(to), option);
           }
         }

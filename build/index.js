@@ -13,4 +13,5 @@ exports.AfterFind = hook.AfterFindHook;
 exports.Column = Columns.Column;
 exports.References = Columns.References;
 exports.PrimaryKey = Columns.PrimaryKey;
+exports.Id = Columns.Id;
 //# sourceMappingURL=index.js.map
