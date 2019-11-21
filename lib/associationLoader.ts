@@ -3,6 +3,7 @@ import { Model, Options, ConnectionOptions, Sequelize } from "sequelize";
 import { Association } from "./association";
 import { ENTITY_NAME, MODEL_OPTION } from "./sequelize";
 import { Connection } from "./connection";
+import { ColumnService } from "./column";
 import * as fs from "fs";
 import { HookService } from "./hook";
 
@@ -99,8 +100,10 @@ class AssociationLoaderService {
       let entity = this.getSequelizeEntity(filePath);
       if (entity) {
         let option: any = Reflect.getMetadata(MODEL_OPTION, entity);
+        let fields = ColumnService.getColumnsFiledOption(entity);
+        // if (Object.keys(fields).length === 0) fields = option.fields;
         option.sequelize = sequelize;
-        entity.init(option.fields, option);
+        entity.init(fields, option);
         // 挂载sequelize在类中
         entity.seqeulize = sequelize;
         entitys.push(entity);

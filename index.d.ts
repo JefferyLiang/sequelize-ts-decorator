@@ -6,11 +6,14 @@ import {
   BelongsToOptions,
   BelongsToManyOptions,
   ConnectionOptions,
-  Options
+  Options,
+  DataType,
+  ModelValidateOptions,
+  ModelAttributeColumnReferencesOptions
 } from "sequelize/types";
 
 interface InitOption extends ModelOptions {
-  fields: ModelAttributes;
+  // fields: ModelAttributes;
   sequelize?: Sequelize;
 }
 
@@ -31,6 +34,20 @@ type AssociationOption<T> = {
   option: T;
 };
 
+interface ColumnOption {
+  type: DataType;
+  nullable?: boolean;
+  unique?: boolean | string | { name: string; msg: string };
+  validate?: ModelValidateOptions;
+}
+
+type ReferencesOnTypes =
+  | "CASCADE"
+  | "RESTRICT"
+  | "SET DEFAULT"
+  | "SET NULL"
+  | "NO ACTION";
+
 declare namespace sequelizeTsDecorator {
   export function Entity(name: string, option: InitOption): ClassDecorator;
   export function HasMany(
@@ -44,6 +61,13 @@ declare namespace sequelizeTsDecorator {
     option: SequelizeEntityLoaderOption
   ): ClassDecorator;
   export function AfterFind(): MethodDecorator;
+  export function Column(options: ColumnOption): PropertyDecorator;
+  export function PrimaryKey(autoIncrement: boolean): PropertyDecorator;
+  export function References(
+    options: ModelAttributeColumnReferencesOptions,
+    onDelete?: ReferencesOnTypes,
+    onUpdate?: ReferencesOnTypes
+  ): PropertyDecorator;
 }
 
 export = sequelizeTsDecorator;

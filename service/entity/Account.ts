@@ -1,46 +1,24 @@
 import { Model, DataTypes, FindOptions } from "sequelize";
 import { Entity } from "../../lib/sequelize";
 import { AfterFindHook } from "../../lib/hook";
+import { Column, PrimaryKey } from "../../lib/column";
 import * as _ from "lodash";
 
 @Entity("account", {
-  fields: {
-    id: {
-      primaryKey: true,
-      autoIncrement: true,
-      type: DataTypes.INTEGER,
-      allowNull: false
-    },
-    email: {
-      type: DataTypes.STRING(512),
-      validate: {
-        isEmail: true
-      },
-      allowNull: false
-    },
-    password: {
-      type: DataTypes.STRING(512),
-      allowNull: false
-    },
-    role_id: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: "roles",
-        key: "id"
-      },
-      onDelete: "CASCADE"
-    },
-    createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE
-  },
   tableName: "accounts",
   timestamps: true
 })
 export class Account extends Model {
+  @Column({ type: DataTypes.INTEGER })
+  @PrimaryKey(true)
   public readonly id!: number;
+  @Column({ type: DataTypes.STRING(512) })
   public email!: string;
+  @Column({ type: DataTypes.STRING(512) })
   public password!: string;
+  @Column({ type: DataTypes.DATE })
   public createdAt!: Date;
+  @Column({ type: DataTypes.DATE })
   public updatedAt!: Date;
 
   public count!: number;

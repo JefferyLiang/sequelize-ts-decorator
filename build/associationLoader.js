@@ -4,6 +4,7 @@ require("reflect-metadata");
 const association_1 = require("./association");
 const sequelize_1 = require("./sequelize");
 const connection_1 = require("./connection");
+const column_1 = require("./column");
 const fs = require("fs");
 const hook_1 = require("./hook");
 function AssociationLoader(option) {
@@ -62,8 +63,9 @@ class AssociationLoaderService {
             let entity = this.getSequelizeEntity(filePath);
             if (entity) {
                 let option = Reflect.getMetadata(sequelize_1.MODEL_OPTION, entity);
+                let fields = column_1.ColumnService.getColumnsFiledOption(entity);
                 option.sequelize = sequelize;
-                entity.init(option.fields, option);
+                entity.init(fields, option);
                 entity.seqeulize = sequelize;
                 entitys.push(entity);
             }
