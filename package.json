@@ -6,7 +6,8 @@
   "author": "JefferyLiang",
   "license": "MIT",
   "scripts": {
-    "build": "rm -rf build && npx typescript"
+    "build": "rm -rf build && npx typescript",
+    "start": "npx ts-node demo/index.ts"
   },
   "devDependencies": {
     "@types/express": "^4.17.2",

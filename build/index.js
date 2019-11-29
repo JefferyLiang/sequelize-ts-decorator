@@ -10,6 +10,7 @@ exports.BelongsTo = sequelize.BelongsTo;
 exports.BelongsToMany = sequelize.BelongsToMany;
 exports.AssociationLoader = loader.AssociationLoader;
 exports.AfterFind = hook.AfterFindHook;
+exports.BeforeFind = hook.BeforeFindHook;
 exports.Column = Columns.Column;
 exports.References = Columns.References;
 exports.PrimaryKey = Columns.PrimaryKey;

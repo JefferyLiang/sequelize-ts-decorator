@@ -61,6 +61,7 @@ declare namespace sequelizeTsDecorator {
     option: SequelizeEntityLoaderOption
   ): ClassDecorator;
   export function AfterFind(): MethodDecorator;
+  export function BeforeFind(): MethodDecorator;
   export function Column(options: ColumnOption): PropertyDecorator;
   export function PrimaryKey(autoIncrement: boolean): PropertyDecorator;
   export function References(

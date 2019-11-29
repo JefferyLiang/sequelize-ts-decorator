@@ -2,7 +2,8 @@ import "reflect-metadata";
 
 export class HookService {
   public static hookTypes = {
-    afterFind: "afterFind"
+    afterFind: "afterFind",
+    beforeFind: "beforeFind"
   };
 
   public static hookDecoratorBuilder(hookName: string) {
@@ -21,4 +22,7 @@ export class HookService {
 
 export const AfterFindHook = HookService.hookDecoratorBuilder(
   HookService.hookTypes.afterFind
+);
+export const BeforeFindHook = HookService.hookDecoratorBuilder(
+  HookService.hookTypes.beforeFind
 );

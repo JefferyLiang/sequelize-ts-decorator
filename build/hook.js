@@ -17,7 +17,9 @@ class HookService {
 }
 exports.HookService = HookService;
 HookService.hookTypes = {
-    afterFind: "afterFind"
+    afterFind: "afterFind",
+    beforeFind: "beforeFind"
 };
 exports.AfterFindHook = HookService.hookDecoratorBuilder(HookService.hookTypes.afterFind);
+exports.BeforeFindHook = HookService.hookDecoratorBuilder(HookService.hookTypes.beforeFind);
 //# sourceMappingURL=hook.js.map

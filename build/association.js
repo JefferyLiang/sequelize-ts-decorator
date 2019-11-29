@@ -1,6 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+require("reflect-metadata");
 class Association {
+    static getAssociationKeyName(key) {
+        return `${this.ASSOCIATION_KEY.toString()}_${key.toString()}`;
+    }
     static associationDecoratorBuilder(association) {
         return (options) => {
             return target => {
@@ -15,6 +19,7 @@ class Association {
     }
 }
 exports.Association = Association;
+Association.ASSOCIATION_KEY = "ASSOCIATION";
 Association.associations = {
     BELONGS_TO: "belongsTo",
     HAS_MANY: "hasMany",
