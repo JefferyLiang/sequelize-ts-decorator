@@ -6,6 +6,11 @@ import { Account } from "../entity/Account";
 export class AccountCtrl {
   @Get("")
   public async list(req: Request) {
-    return await Account.findAndCountAll();
+    const PAGE = parseInt(req.query.page, 10) || 1;
+    const SIZE = parseInt(req.query.size, 10) || 20;
+    return await Account.findAndCountAll({
+      limit: SIZE,
+      offset: (PAGE - 1) * SIZE
+    });
   }
 }

@@ -13,7 +13,6 @@ import {
 } from "sequelize/types";
 
 interface InitOption extends ModelOptions {
-  // fields: ModelAttributes;
   sequelize?: Sequelize;
 }
 
@@ -60,8 +59,18 @@ declare namespace sequelizeTsDecorator {
   export function AssociationLoader(
     option: SequelizeEntityLoaderOption
   ): ClassDecorator;
+  // hook
   export function AfterFind(): MethodDecorator;
   export function BeforeFind(): MethodDecorator;
+  export function BeforeSave(): MethodDecorator;
+  export function AfterSave(): MethodDecorator;
+  export function BeforeUpdate(): MethodDecorator;
+  export function AfterUpdate(): MethodDecorator;
+  export function BeforeCreate(): MethodDecorator;
+  export function AfterCreate(): MethodDecorator;
+  export function BeforeDestroy(): MethodDecorator;
+  export function AfterDestroy(): MethodDecorator;
+
   export function Column(options: ColumnOption): PropertyDecorator;
   export function PrimaryKey(autoIncrement: boolean): PropertyDecorator;
   export function References(

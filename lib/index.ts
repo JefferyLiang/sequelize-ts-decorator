@@ -11,8 +11,16 @@ export const BelongsToMany = sequelize.BelongsToMany;
 // loader
 export const AssociationLoader = loader.AssociationLoader;
 // hooks
-export const AfterFind = hook.AfterFindHook;
 export const BeforeFind = hook.BeforeFindHook;
+export const AfterFind = hook.AfterFindHook;
+export const BeforeSave = hook.BeforeSaveHook;
+export const AfterSave = hook.AfterSaveHook;
+export const BeforeUpdate = hook.BeforeUpdateHook;
+export const AfterUpdate = hook.AfterUpdateHook;
+export const BeforeCreate = hook.BeforeCreateHook;
+export const AfterCreate = hook.AfterCreateHook;
+export const BeforeDestroy = hook.BeforeDestroyHook;
+export const AfterDestroy = hook.AfterDestroyHook;
 // entity attribute
 export const Column = Columns.Column;
 export const References = Columns.References;

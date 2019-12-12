@@ -1,6 +1,6 @@
 import { Model, DataTypes, FindOptions } from "sequelize";
 import { Entity } from "../../lib/sequelize";
-import { AfterFindHook } from "../../lib/hook";
+import { AfterFindHook, BeforeFindHook } from "../../lib/hook";
 import { Column, Id } from "../../lib/column";
 import * as _ from "lodash";
 
@@ -21,6 +21,11 @@ export class Account extends Model {
   public updatedAt!: Date;
 
   public count!: number;
+
+  @BeforeFindHook()
+  public static showLog(option: FindOptions) {
+    if (option.limit === 20) option.limit = 25;
+  }
 
   @AfterFindHook()
   public static setCount(accounts: Account | Account[], option: FindOptions) {
