@@ -5,7 +5,8 @@ import {
   BelongsToOptions,
   BelongsToManyOptions,
   ModelOptions,
-  Sequelize
+  Sequelize,
+  HasOneOptions
 } from "sequelize/types";
 
 export const ENTITY_NAME = Symbol("entity");
@@ -33,3 +34,7 @@ export const BelongsTo = Association.associationDecoratorBuilder<
 export const BelongsToMany = Association.associationDecoratorBuilder<
   BelongsToManyOptions
 >(Association.associations.BELONGS_TO_MANY);
+
+export const HasOne = Association.associationDecoratorBuilder<HasOneOptions>(
+  Association.associations.HAS_ONE
+);

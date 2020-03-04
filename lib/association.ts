@@ -11,7 +11,8 @@ export class Association {
   public static associations = {
     BELONGS_TO: "belongsTo",
     HAS_MANY: "hasMany",
-    BELONGS_TO_MANY: "belongsToMany"
+    BELONGS_TO_MANY: "belongsToMany",
+    HAS_ONE: "hasOne"
   };
 
   private static getAssociationKeyName(key: string | symbol): string {

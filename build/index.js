@@ -8,6 +8,7 @@ exports.Entity = sequelize.Entity;
 exports.HasMany = sequelize.HasMany;
 exports.BelongsTo = sequelize.BelongsTo;
 exports.BelongsToMany = sequelize.BelongsToMany;
+exports.HasOne = sequelize.HasOne;
 exports.AssociationLoader = loader.AssociationLoader;
 exports.BeforeFind = hook.BeforeFindHook;
 exports.AfterFind = hook.AfterFindHook;

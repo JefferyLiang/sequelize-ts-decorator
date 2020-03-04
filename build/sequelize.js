@@ -16,4 +16,5 @@ exports.Entity = Entity;
 exports.HasMany = association_1.Association.associationDecoratorBuilder(association_1.Association.associations.HAS_MANY);
 exports.BelongsTo = association_1.Association.associationDecoratorBuilder(association_1.Association.associations.BELONGS_TO);
 exports.BelongsToMany = association_1.Association.associationDecoratorBuilder(association_1.Association.associations.BELONGS_TO_MANY);
+exports.HasOne = association_1.Association.associationDecoratorBuilder(association_1.Association.associations.HAS_ONE);
 //# sourceMappingURL=sequelize.js.map

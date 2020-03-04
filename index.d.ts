@@ -9,7 +9,9 @@ import {
   Options,
   DataType,
   ModelValidateOptions,
-  ModelAttributeColumnReferencesOptions
+  ModelAttributeColumnReferencesOptions,
+  HasOne,
+  HasOneOptions
 } from "sequelize/types";
 
 interface InitOption extends ModelOptions {
@@ -49,6 +51,7 @@ type ReferencesOnTypes =
 
 declare namespace sequelizeTsDecorator {
   export function Entity(name: string, option: InitOption): ClassDecorator;
+  export function HasOne(opptions: AssociationOption<HasOneOptions>[]);
   export function HasMany(
     options: AssociationOption<HasManyOptions>[]
   ): ClassDecorator;
